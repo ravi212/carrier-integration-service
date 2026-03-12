@@ -1,14 +1,14 @@
 import axios from "axios"
 import { RateRequest } from "../../domain/rate-request"
 import { UPSConfig } from "./ups.config"
-
+import { handleUPSError } from "../../errors/handle-ups-error"
 export class UPSRateClient {
 
   async getRates(token: string, request: RateRequest): Promise<any> {
 
     const payload = this.buildPayload(request)
-
-    const response = await axios.post(
+    try{
+          const response = await axios.post(
       `${UPSConfig.baseUrl}/rating/v1/Rate`,
       payload,
       {
@@ -21,6 +21,10 @@ export class UPSRateClient {
     )
 
     return response.data
+    } catch (error) {
+      handleUPSError(error);
+    }
+
   }
 
   private buildPayload(request: RateRequest) {

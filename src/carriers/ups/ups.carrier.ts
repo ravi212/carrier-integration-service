@@ -8,7 +8,7 @@ export class UPSCarrier implements Carrier {
   private authService = new UPSAuthService();
   private client = new UPSRateClient();
   private mapper = new UPSMapper();
-  
+
   async getRates(request: RateRequest): Promise<RateQuote[]> {
     const token = await this.authService.getToken();
     const response = await this.client.getRates(token, request);
